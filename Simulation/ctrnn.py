@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.preprocessing import normalize
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
@@ -52,6 +53,8 @@ class CTRNN():
         self.invTimeConstants = 1.0/self.TimeConstants
 
 def ctrnn_from_genome(genotype):
+    gs = genotype.shape[0]
+    N = int((-5 + (25+8*gs)**(1/2))/2)
     HN = int(N/2)
     WR = 16     # Weight range: maps from [-1, 1] to: [-16,16]
     BR = 16     # Bias range: maps from [-1, 1] to: [-16,16]
@@ -59,7 +62,7 @@ def ctrnn_from_genome(genotype):
     MR = 1      # Motor range: maps from [-1, 1] to: [-1,1]
     
     # Create the nervous system
-    ns = ctrnn.CTRNN(N)
+    ns = CTRNN(N)
     
     # Set the parameters of the nervous system according to the genotype-phenotype map
     k = 0
@@ -99,4 +102,4 @@ def ctrnn_from_genome(genotype):
     # Initialize the state of the nervous system to some value
     ns.initializeState(np.zeros(N))
 
-    return 
+    return ns, motorweights, sensoryweights
