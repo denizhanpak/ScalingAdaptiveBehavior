@@ -161,8 +161,9 @@ def circle_plot(data,cmap="PiYG"):
 
 mis = []
 for i in [1,2,3,4,5]:
-    inputs = get_input_vectors(i,extent=360)
+    inputs = get_input_vectors(i,extent=91)
     mis.append(inputs)
+
 
 for n in [2,4,8,16,32]:
     rv = MultiQuasiStaticApproximation(get_agent(agent_id=0, n=n), mis)
