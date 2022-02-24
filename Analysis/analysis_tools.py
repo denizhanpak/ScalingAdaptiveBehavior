@@ -63,7 +63,7 @@ def MultiQuasiStaticApproximation(agent,multiinputs,steps=500):#,folder=):
             
     return np.array(rv)
 
-def plot_mqsa(responses):
+def plot_mqsa(responses,agent_name="Bob"):
     fig, axs = plt.subplots(responses.shape[0], sharex=True, sharey=False, figsize=(20,10))
     for distance, angle_vec in enumerate(responses):
         alpha_index = 0
@@ -160,8 +160,8 @@ def circle_plot(data,cmap="PiYG"):
     plt.colorbar()
 
 
-agent_count=500
-run = 2
+agent_count=2
+run = 1
 
 mis = []
 for i in [1,2,3,4,5]:
@@ -177,8 +177,8 @@ for n in [2,4,8,16,32]:
 
     rv /= agent_count
 
-    plot_mqsa(responses=rv[:,:91,:,:],agent_name=f"brainsize_{n}_run{run}_avg")
-    plot_av_mqsa(responses=rv[:,:91,:,:],agent_name=f"brainsize_{n}_run{run}_avg")
+    plot_mqsa(responses=rv[:,:91,:,:],agent_name=f"fbrainsize_{n}_run{run}_avg")
+    plot_av_mqsa(responses=rv[:,:91,:,:],agent_name=f"fbrainsize_{n}_run{run}_avg")
     trajs = get_all_transiences(rv)
     trajs /= trajs.max()
-    plot_agent_circle_transience(trajs,agent_name=f"brainsize_{n}_run{run}_avg")
+    plot_agent_circle_transience(trajs,agent_name=f"fbrainsize_{n}_run{run}_avg")
