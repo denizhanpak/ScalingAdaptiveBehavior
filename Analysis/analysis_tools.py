@@ -74,7 +74,8 @@ def plot_mqsa(responses):
         axs[distance].set_ylabel("Neuron Outputs")
         axs[distance].set_xlabel("Time")
 
-    plt.show()
+    plt.savefig(f"../Data/{agent_name}_motr_out.png")
+    plt.clf()
 
 def plot_av_mqsa(responses,agent_name="Bob"):
     fig, axs = plt.subplots(responses.shape[0], sharex=True, sharey=False, figsize=(20,10))
@@ -159,6 +160,9 @@ def circle_plot(data,cmap="PiYG"):
     plt.colorbar()
 
 
+agent_count=500
+run = 2
+
 mis = []
 for i in [1,2,3,4,5]:
     inputs = get_input_vectors(i,extent=91)
@@ -166,13 +170,15 @@ for i in [1,2,3,4,5]:
 
 
 for n in [2,4,8,16,32]:
-    rv = MultiQuasiStaticApproximation(get_agent(agent_id=0, n=n), mis)
-    for aid in range(1,100):
+    rv = MultiQuasiStaticApproximation(get_agent(agent_id=0, n=n,
+        folder=f"../Data/Run{run}/"), mis)
+    for aid in range(1,agent_count):
         rv += MultiQuasiStaticApproximation(get_agent(agent_id=aid, n=n), mis)
 
-    rv /= 100
+    rv /= agent_count
 
-    plot_av_mqsa(responses=rv[:,:91,:,:],agent_name=f"brainsize_{n}_run1_avg")
+    plot_mqsa(responses=rv[:,:91,:,:],agent_name=f"brainsize_{n}_run{run}_avg")
+    plot_av_mqsa(responses=rv[:,:91,:,:],agent_name=f"brainsize_{n}_run{run}_avg")
     trajs = get_all_transiences(rv)
     trajs /= trajs.max()
-    plot_agent_circle_transience(trajs,agent_name=f"brainsize_{n}_run1_avg")
+    plot_agent_circle_transience(trajs,agent_name=f"brainsize_{n}_run{run}_avg")
